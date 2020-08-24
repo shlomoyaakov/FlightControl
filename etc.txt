@@ -1,0 +1,52 @@
+311312045, daniel saraf
+206322588, shlomo yakov
+
+Unit Tests:
+FlightsController tests:
+1) Test that checks the amount of flights that retruns from GetFlightsAsync method in
+FlightsController with sync_all parmeter.
+We used for that test two mocks.
+The first one is httpContext mock-because our controller checks whether the "sync_all"
+parmeter is within the Request or not so we implemented using the httpcontext mock a querystring
+that contains "sync_all".
+The second one is flightManager that holds the database and sends the requests for the remote
+servers.
+By using a mock object we can return an answer to the controller without the
+database and the remote server.
+After recieving the answer from the controller it checks that the
+amount of flights is the same of the amount the flightmanager mock returns.
+2) Test that checks the amount of flights that retruns from GetFlightsAsync method in
+FlightsController without sync_all parmeter.
+the mock objects are the same from the previous test except from the querystring inside the httpcontext,
+in this test it doesnt contain the "sync_all" parameter.
+3) Test for invalid datetime in GetFlightsAsync in FlightsController without sync_all parmeter.
+We used for this test httpcontext mock identical to the previous test, and ScheduledCache stub for
+the flightManager consturctor.
+The controller is calling for method inside the flightmanger object that checks the validation of
+the datetime string. and if the datetime is invalid or in the wrong format the method throws exception
+with detailed message.
+The test checks if the value that returns from the controller is a badRequest object with the specific
+message.
+4) Test that for invalid id when calling to Delete in the flightsconroller.
+The mock object is the flightManger that holds the data base.
+The flightmanger mock object throws exception, When the FlightsConroller is going to checks
+,by the help of flightmanger, whether the id is already exist or not.
+The test verify that the controller returns value is NotFound object with the specific message
+from the exception.
+
+serverController tests:
+1) Test that checks the amount of servers the conroller returns in Get method.
+The mock object is the servermanger and we implemented by the mocks attributes
+that whenever the conroller asks for list of server from the database, the mock object returns
+a list of two servers(the controller gets the list from by asking the servermanger,that holds the database).
+The test verifies that it gets the excat amount of servers from the controller.
+2) Test that checks the validation of a Server object that the Serverconroller gets
+in the post method.
+The stub object is the ScheduledCache for the servermanger.
+The controller gets a server with an invalid properties and should return a
+badrequest object with message that says the server is invalid.
+The test verifies the value the conroller returns is that badrequest object.
+
+Bonuses:
+1. We used sqlite data base.
+2. We implement DAD
